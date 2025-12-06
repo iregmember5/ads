@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { fetchLandingPageData } from "../types/ads";
+import { fetchLandingPageData, type SalesPages } from "../types/ads";
 import Adsbook from "./Adsbook";
 
 type BusinessType = "gym" | "local" | "fitness" | "agency" | "coach" | "";
@@ -19,9 +19,10 @@ const Ads: React.FC = () => {
     phone: "",
     email: "",
   });
+  const [data, setData] = useState<SalesPages | null>(null);
 
   useEffect(() => {
-    fetchLandingPageData();
+    fetchLandingPageData().then(setData);
   }, []);
 
   const handleBusinessTypeChange = (type: BusinessType) => {
@@ -211,8 +212,7 @@ const Ads: React.FC = () => {
       {/* Header */}
       <div className="bg-white text-black text-center py-3 px-4">
         <p className="text-sm md:text-base font-semibold">
-          We help business owners doing $10k-$400k+ month get high-quality leads
-          via FB/IG ads.
+          {data?.header_section?.title || "We help business owners doing $10k-$400k+ month get high-quality leads via FB/IG ads."}
         </p>
       </div>
 
@@ -223,16 +223,11 @@ const Ads: React.FC = () => {
             <>
               <div className="text-center mb-8">
                 <h1 className="text-3xl md:text-4xl font-bold mb-4">
-                  Most agencies charge $1K–$6K/month for average results.
+                  {data?.main_hero_section?.heading || "Most agencies charge $1K–$6K/month for average results."}
                 </h1>
-                <h2 className="text-xl md:text-2xl font-semibold mb-6">
-                  We run proven Facebook & Instagram ads for $100/week that
-                  bring high-quality leads.
-                </h2>
-                <p className="text-lg mb-2">
-                  Step 1: Enter your details below.
-                </p>
-                <p className="text-lg">Step 2: Book a 30-min clarity call.</p>
+                <div className="text-lg" style={{ whiteSpace: 'pre-line' }}>
+                  {data?.main_hero_section?.description || "Step 1: Enter your details below.\n\nStep 2: Book a 30-min clarity call."}
+                </div>
               </div>
 
               <div className="bg-white text-black rounded-lg p-8 max-w-2xl mx-auto">
@@ -388,29 +383,25 @@ const Ads: React.FC = () => {
           {/* Testimonial at bottom for steps 1-4 */}
           {step <= 4 && (
             <div className="mt-12 max-w-md mx-auto">
-              <div className="border border-gray-700 rounded-2xl p-6">
-                <div className="flex justify-center mb-4">
-                  <div className="w-40 h-40 rounded-full overflow-hidden bg-gray-800">
-                    <div className="w-full h-full flex items-center justify-center text-6xl">
-                      👥
+              {data?.card_sections?.cards?.[0] && (
+                <div className="border border-gray-700 rounded-2xl p-6">
+                  {data.card_sections.cards[0].card_image && (
+                    <div className="flex justify-center mb-4">
+                      <img
+                        src={`https://esign-admin.signmary.com${data.card_sections.cards[0].card_image.url}`}
+                        alt={data.card_sections.cards[0].card_image.title}
+                        className="w-40 h-40 rounded-full object-cover"
+                      />
                     </div>
-                  </div>
+                  )}
+                  <p className="text-blue-400 text-3xl font-serif mb-2 text-center">
+                    {data.card_sections.cards[0].subtitle}
+                  </p>
+                  <p className="text-gray-300 text-sm mb-2 text-center" style={{ whiteSpace: 'pre-line' }}>
+                    {data.card_sections.cards[0].description}
+                  </p>
                 </div>
-                <p className="text-blue-400 text-3xl font-serif mb-2 text-center">
-                  Revenue
-                </p>
-                <h3 className="text-3xl font-bold mb-4 text-center">
-                  $400,000+ PER MONTH
-                </h3>
-                <p className="text-gray-300 text-sm mb-2 text-center">
-                  "Some wins and improvements I have made: Time management has
-                  improved, a big plus for business and life. Closing leads, I
-                  am closing more leads into clients than before I started.
-                  Marketing, from no direction to become one of my favourite
-                  things."
-                </p>
-                <p className="text-right text-lg">-Adam</p>
-              </div>
+              )}
             </div>
           )}
         </div>
