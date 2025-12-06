@@ -19,7 +19,41 @@ const Ads: React.FC = () => {
     phone: "",
     email: "",
   });
+  const [countryCode, setCountryCode] = useState("+1");
   const [data, setData] = useState<SalesPages | null>(null);
+
+  const countries = [
+    { code: "+1", flag: "🇺🇸", name: "US" },
+    { code: "+44", flag: "🇬🇧", name: "UK" },
+    { code: "+91", flag: "🇮🇳", name: "IN" },
+    { code: "+86", flag: "🇨🇳", name: "CN" },
+    { code: "+81", flag: "🇯🇵", name: "JP" },
+    { code: "+49", flag: "🇩🇪", name: "DE" },
+    { code: "+33", flag: "🇫🇷", name: "FR" },
+    { code: "+39", flag: "🇮🇹", name: "IT" },
+    { code: "+7", flag: "🇷🇺", name: "RU" },
+    { code: "+61", flag: "🇦🇺", name: "AU" },
+    { code: "+55", flag: "🇧🇷", name: "BR" },
+    { code: "+82", flag: "🇰🇷", name: "KR" },
+    { code: "+34", flag: "🇪🇸", name: "ES" },
+    { code: "+52", flag: "🇲🇽", name: "MX" },
+    { code: "+62", flag: "🇮🇩", name: "ID" },
+    { code: "+31", flag: "🇳🇱", name: "NL" },
+    { code: "+27", flag: "🇿🇦", name: "ZA" },
+    { code: "+90", flag: "🇹🇷", name: "TR" },
+    { code: "+966", flag: "🇸🇦", name: "SA" },
+    { code: "+41", flag: "🇨🇭", name: "CH" },
+    { code: "+46", flag: "🇸🇪", name: "SE" },
+    { code: "+47", flag: "🇳🇴", name: "NO" },
+    { code: "+48", flag: "🇵🇱", name: "PL" },
+    { code: "+20", flag: "🇪🇬", name: "EG" },
+    { code: "+92", flag: "🇵🇰", name: "PK" },
+    { code: "+880", flag: "🇧🇩", name: "BD" },
+    { code: "+234", flag: "🇳🇬", name: "NG" },
+    { code: "+63", flag: "🇵🇭", name: "PH" },
+    { code: "+84", flag: "🇻🇳", name: "VN" },
+    { code: "+971", flag: "🇦🇪", name: "AE" },
+  ];
 
   useEffect(() => {
     fetchLandingPageData().then(setData);
@@ -313,17 +347,24 @@ const Ads: React.FC = () => {
                 {data?.web_form_section?.form?.fields?.[2]?.label || "Mobile Number *"}
               </label>
               <div className="flex items-center border border-gray-300 rounded mb-6 overflow-hidden">
-                <div className="bg-gray-100 px-3 py-3 flex items-center gap-2 border-r border-gray-300">
-                  <span className="text-xl">🇵🇰</span>
-                  <span>+</span>
-                </div>
+                <select
+                  value={countryCode}
+                  onChange={(e) => setCountryCode(e.target.value)}
+                  className="bg-gray-100 px-3 py-3 border-r border-gray-300 focus:outline-none cursor-pointer"
+                >
+                  {countries.map((country) => (
+                    <option key={country.code} value={country.code}>
+                      {country.flag} {country.code}
+                    </option>
+                  ))}
+                </select>
                 <input
                   type="tel"
                   value={formData.phone}
                   onChange={(e) =>
                     setFormData({ ...formData, phone: e.target.value })
                   }
-                  placeholder="(0786) 786 786 786"
+                  placeholder="123 456 7890"
                   className="flex-1 px-4 py-3 focus:outline-none"
                 />
               </div>
