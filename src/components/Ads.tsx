@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { fetchLandingPageData } from "../types/ads";
+import Adsbook from "./Adsbook";
 
 type BusinessType = "gym" | "local" | "fitness" | "agency" | "coach" | "";
 
@@ -50,6 +51,10 @@ const Ads: React.FC = () => {
   };
 
   if (step === 5) {
+    return <Adsbook />;
+  }
+
+  if (false) {
     return (
       <div className="min-h-screen bg-black text-white overflow-y-auto">
         {/* Congratulations Section */}

@@ -124,7 +124,7 @@ export const fetchFeaturesPageById = async (
   }
 };
 
-export const fetchWorkbookPageData = async (): Promise<SalesPages | null> => {
+export const fetchAdsbookPageData = async (): Promise<SalesPages | null> => {
   try {
     const apiUrl = `${baseApiUrl}/features-pages/`;
 
