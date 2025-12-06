@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { fetchLandingPageData } from "../types/ads";
 
 type BusinessType = "gym" | "local" | "fitness" | "agency" | "coach" | "";
 
@@ -17,6 +18,10 @@ const Ads: React.FC = () => {
     phone: "",
     email: "",
   });
+
+  useEffect(() => {
+    fetchLandingPageData();
+  }, []);
 
   const handleBusinessTypeChange = (type: BusinessType) => {
     setFormData({ ...formData, businessType: type });
