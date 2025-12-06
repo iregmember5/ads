@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { fetchAdsbookPageData, type SalesPages } from "../types/ads";
 
 const Adsbook: React.FC = () => {
   const [data, setData] = useState<SalesPages | null>(null);
   const [loading, setLoading] = useState(true);
+  const scriptLoaded = useRef(false);
 
   useEffect(() => {
     fetchAdsbookPageData()
@@ -13,6 +14,16 @@ const Adsbook: React.FC = () => {
       })
       .catch(console.error);
   }, []);
+
+  useEffect(() => {
+    if (!loading && !scriptLoaded.current) {
+      const script = document.createElement('script');
+      script.src = 'https://assets.calendly.com/assets/external/widget.js';
+      script.async = true;
+      document.body.appendChild(script);
+      scriptLoaded.current = true;
+    }
+  }, [loading]);
 
   if (loading) {
     return (
@@ -50,18 +61,7 @@ const Adsbook: React.FC = () => {
           </p>
         </div>
 
-        {data?.header_video?.video_url && (
-          <div className="mb-8">
-            <iframe
-              src={data.header_video.video_url}
-              width="100%"
-              height="500"
-              frameBorder="0"
-              className="rounded-lg"
-              allowFullScreen
-            ></iframe>
-          </div>
-        )}
+        <div className="calendly-inline-widget" data-url="https://calendly.com/belarusmaster786" style={{ minWidth: '320px', height: '700px' }}></div>
       </div>
 
       <div className="max-w-2xl mx-auto px-4 pb-8">
