@@ -232,32 +232,32 @@ const Ads: React.FC = () => {
 
               <div className="bg-white text-black rounded-lg p-8 max-w-2xl mx-auto">
                 <p className="mb-4 font-semibold">
-                  What type of business do you own? (We don't work with Ecom) *
+                  {data?.web_form_section?.form?.fields?.[0]?.label || "What type of business do you own? (We don't work with Ecom) *"}
                 </p>
 
                 <div className="space-y-3">
-                  {[
-                    { value: "gym", label: "Gym Owner" },
-                    { value: "local", label: "Local Service Based Business" },
-                    { value: "fitness", label: "Online Fitness Coach" },
-                    { value: "agency", label: "Digital Agency Owner" },
-                    { value: "coach", label: "Online Business Coach" },
-                  ].map((option) => (
+                  {(data?.web_form_section?.form?.fields?.[0]?.choices || [
+                    "Gym Owner",
+                    "Local Service Based Business",
+                    "Online Fitness Coach",
+                    "Digital Agency Owner",
+                    "Online Business Coach",
+                  ]).filter((choice: string) => choice.trim()).map((option: string, idx: number) => (
                     <label
-                      key={option.value}
+                      key={idx}
                       className="flex items-center space-x-3 cursor-pointer hover:bg-gray-50 p-2 rounded"
                     >
                       <input
                         type="radio"
                         name="businessType"
-                        value={option.value}
-                        checked={formData.businessType === option.value}
+                        value={option}
+                        checked={formData.businessType === option}
                         onChange={() =>
-                          handleBusinessTypeChange(option.value as BusinessType)
+                          handleBusinessTypeChange(option as BusinessType)
                         }
                         className="w-4 h-4"
                       />
-                      <span>{option.label}</span>
+                      <span>{option}</span>
                     </label>
                   ))}
                 </div>
@@ -267,7 +267,7 @@ const Ads: React.FC = () => {
                   disabled={!formData.businessType}
                   className="w-full mt-6 bg-blue-600 text-white py-3 rounded font-semibold hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition"
                 >
-                  NEXT →
+                  {data?.web_form_section?.form?.button_text || "NEXT"} →
                 </button>
               </div>
             </>
@@ -275,20 +275,17 @@ const Ads: React.FC = () => {
 
           {step === 2 && (
             <div className="bg-white text-black rounded-lg p-8 max-w-2xl mx-auto">
-              <h2 className="text-xl font-bold mb-2">You're qualified.</h2>
               <p className="mb-6">
-                Add your details below and book your free demo call on the next
-                page.
+                {data?.web_form_section?.form?.fields?.[1]?.label || "You're qualified. Add your details below and book your free demo call on the next page."}
               </p>
 
-              <label className="block mb-2 font-semibold">Your name *</label>
               <input
                 type="text"
                 value={formData.name}
                 onChange={(e) =>
                   setFormData({ ...formData, name: e.target.value })
                 }
-                placeholder="tester test"
+                placeholder={data?.web_form_section?.form?.fields?.[1]?.placeholder || "Enter your name"}
                 className="w-full border border-gray-300 rounded px-4 py-3 mb-6 focus:outline-none focus:border-blue-500"
               />
 
@@ -313,7 +310,7 @@ const Ads: React.FC = () => {
           {step === 3 && (
             <div className="bg-white text-black rounded-lg p-8 max-w-2xl mx-auto">
               <label className="block mb-2 font-semibold">
-                Mobile Number *
+                {data?.web_form_section?.form?.fields?.[2]?.label || "Mobile Number *"}
               </label>
               <div className="flex items-center border border-gray-300 rounded mb-6 overflow-hidden">
                 <div className="bg-gray-100 px-3 py-3 flex items-center gap-2 border-r border-gray-300">
@@ -351,7 +348,7 @@ const Ads: React.FC = () => {
 
           {step === 4 && (
             <div className="bg-white text-black rounded-lg p-8 max-w-2xl mx-auto">
-              <label className="block mb-2 font-semibold">Email *</label>
+              <label className="block mb-2 font-semibold">{data?.web_form_section?.form?.fields?.[3]?.label || "Email *"}</label>
               <input
                 type="email"
                 value={formData.email}
